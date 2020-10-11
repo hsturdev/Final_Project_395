@@ -1,0 +1,7 @@
+public class BlessCurseOwner
+{
+    private Creature owner;
+    public BlessCuresOwner(Creature _owner) {
+        owner = _owner;
+    }
+}

@@ -1,0 +1,12 @@
+public class Monster{
+    private String Name;
+    private int room;
+    private int serial;
+    public void setName(String _Name) {
+        Name = _Name;
+    }
+    public void setID(int _room, int _serial) {
+        room = _room;
+        serial = _serial;
+    }
+}
