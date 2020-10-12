@@ -1,5 +1,5 @@
 package src;
-public class Player{
+public class Player extends Creature{ 
     private Item sword;
     private Item armor;
     private String DeathAction;

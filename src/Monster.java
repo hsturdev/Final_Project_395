@@ -4,7 +4,7 @@ public class Monster extends Creature{
         System.out.println("Monster");
     }
 
-    public void setName(string x){
+    public void setName(String string){
         System.out.println("setName");
     }
 

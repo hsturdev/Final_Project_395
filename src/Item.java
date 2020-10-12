@@ -17,14 +17,14 @@ public class Item
     }
 
     public void setHpMoves(String _HpMoves) {
-        HpMoves = _HpMoves;
+        // HpMoves = _HpMoves;
     }
 
     public void setDeathAction(String _DeathAction) {
-        DeathAction = _DeathAction;
+        // DeathAction = _DeathAction;
     }
 
     public void setHitAction(String _HitAction) {
-        HitAction = _HitAction;
+        // HitAction = _HitAction;
     }
 }
