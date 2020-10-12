@@ -1,6 +1,7 @@
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import java.util
 
 public class DungeonXMLHandler extends DefaultHandler {
     // the two lines that follow declare a DEBUG flag to control
@@ -22,6 +23,7 @@ public class DungeonXMLHandler extends DefaultHandler {
     // an ArrayList in your project.
     private ArrayList<Displayble> dis_object;
 
+
     // The XML file contains a list of Students, and within each
     // Student a list of activities (clubs and classes) that the
     // student participates in.  When the XML file initially
@@ -31,10 +33,6 @@ public class DungeonXMLHandler extends DefaultHandler {
     // current Student and Activity allows setters on those
     // objects to be called to initialize those fields.
     private Displayable ObjectsBeingParsed = null;
-    private Structure structureBeingParsed = null;
-    private Creature creatureBeingParsed = null;
-    private Item itemBeingParsed = null;
-    private Magic magicBeingParsed = null;
 
     // The bX fields here indicate that at corresponding field is
     // having a value defined in the XML file.  In particular, a
@@ -80,7 +78,7 @@ public class DungeonXMLHandler extends DefaultHandler {
             System.out.println(CLASSID + ".startElement qName: " + qName);
         }
 
-        if (qName.equalsIgnoreCase("Students")) {
+        if (qName.equalsIgnoreCase("Displayables")) {
             maxStudents = Integer.parseInt(attributes.getValue("count"));
             students = new Student[maxStudents];
         } else if (qName.equalsIgnoreCase("Student")) {
@@ -165,8 +163,8 @@ public class DungeonXMLHandler extends DefaultHandler {
         }
     }
 
-    private void addStudent(Student student) {
-        students[studentCount++] = student;
+    private void addDisplayable(Displayable _dis_object) {
+        dis_object.add(_dis_object);
     }
 
     @Override
