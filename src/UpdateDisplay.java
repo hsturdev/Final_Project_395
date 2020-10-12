@@ -1,3 +1,4 @@
+package src;
 public class UpdateDisplay
 {
     private String name;

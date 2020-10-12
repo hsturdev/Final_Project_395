@@ -1,3 +1,4 @@
+package src;
 public class YouWin
 {
     private String name;

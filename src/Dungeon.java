@@ -1,3 +1,4 @@
+package src;
 public class Dungeon{
     public void getDungeon(string name, int width, int gameHeight){
         System.out.println("getDungeon");

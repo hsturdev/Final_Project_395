@@ -1,3 +1,4 @@
+package src;
 public class Hallucinate
 {
     private Creature owner;

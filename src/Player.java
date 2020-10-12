@@ -1,3 +1,4 @@
+package src;
 public class Player{
     private Item sword;
     private Item armor;
