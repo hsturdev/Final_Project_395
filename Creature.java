@@ -24,7 +24,7 @@ public class Creature{
         DeathAction = _DeathAction;
     }
 
-    public void setHitAction( _HitAction) {
+    public void setHitAction(CreatureAction _HitAction) {
         HitAction = _HitAction;
     }
 }
