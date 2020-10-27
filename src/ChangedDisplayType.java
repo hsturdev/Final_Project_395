@@ -1,3 +1,4 @@
+package src;
 public class ChangedDisplayType
 {
     private String name;

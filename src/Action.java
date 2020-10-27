@@ -1,3 +1,5 @@
+package src;
+
 public class Action{
     private char c;
     private String msg;
