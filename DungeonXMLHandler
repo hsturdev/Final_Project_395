@@ -1,7 +1,7 @@
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-import java.util
+import java.util.*;
 
 public class DungeonXMLHandler extends DefaultHandler {
     // the two lines that follow declare a DEBUG flag to control
@@ -21,7 +21,9 @@ public class DungeonXMLHandler extends DefaultHandler {
     // an ArrayList of Students (ArrayList<Student>) and not needed
     // to keep tract of the length and maxStudents.  You should use
     // an ArrayList in your project.
-    private ArrayList<Displayble> dis_object;
+    private Displayable[] dis_object;
+    private int max_objects = 0;
+    private int obj_Count = 0;
 
 
     // The XML file contains a list of Students, and within each
@@ -32,7 +34,13 @@ public class DungeonXMLHandler extends DefaultHandler {
     // give the values of the fields.  Having access to the
     // current Student and Activity allows setters on those
     // objects to be called to initialize those fields.
-    private Displayable ObjectsBeingParsed = null;
+    private Displayable displayableBeingParsed = null;
+    private Dungeon dungeonBeingParsed = null;
+    private Room roomBeingParsed = null;
+    private Passage passageBeingParsed = null;
+    private Item itemBeingParsed = null;
+    private Monster monsterBeingParsed = null;
+    private Player playerBeingParsed = null;
 
     // The bX fields here indicate that at corresponding field is
     // having a value defined in the XML file.  In particular, a
@@ -44,13 +52,18 @@ public class DungeonXMLHandler extends DefaultHandler {
     // in that code we check if bInstructor is set.  If it is,
     // we can extract a string representing the instructor name
     // from the data variable above.
-    private boolean bInstructor = false;
-    private boolean bCredit = false;
-    private boolean bName = false;
-    private boolean bNumber = false;
-    private boolean bLocation = false;
-    private boolean bMeetingTime = false;
-    private boolean bMeetingDay = false;
+    private boolean bheight = false;
+    private boolean bhp = false;
+    private boolean bhpMoves = false;
+    private boolean bmaxhit = false;
+    private boolean btype = false;
+    private boolean bIntValue = false;
+    private boolean bPosX = false;
+    private boolean bPosY = false;
+    private boolean bvisible = false;
+    private boolean bwidth = false;
+    private boolean bInvisible = false;
+
 
     // Used by code outside the class to get the list of Student objects
     // that have been constructed.
@@ -77,47 +90,91 @@ public class DungeonXMLHandler extends DefaultHandler {
         if (DEBUG > 1) {
             System.out.println(CLASSID + ".startElement qName: " + qName);
         }
-
-        if (qName.equalsIgnoreCase("Displayables")) {
-            maxStudents = Integer.parseInt(attributes.getValue("count"));
-            students = new Student[maxStudents];
-        } else if (qName.equalsIgnoreCase("Student")) {
-            int numActivities = Integer.parseInt(attributes.getValue("numActivities"));
+        if (qName.equalsIgnoreCase("Dungeon"))
+        {
+            max_objects += 1;
+            dis_object = new Displayable[max_objects];
             String name = attributes.getValue("name");
-            Student student = new Student(name, numActivities);
-            addStudent(student);
-            studentBeingParsed = student;
-        } else if (qName.equalsIgnoreCase("Activity")) {
+            int width = Integer.parseInt(attributes.getValue("width"));
+            int gameheight = Integer.parseInt(attributes.getValue("gameheight"));
+            dungeonBeingParsed = new Dungeon(name,width,gameheight));
+            displayableBeingParsed.addDisplayable(dungeonBeingParsed);
+        }
+        else if (qName.equalsIgnoreCase("Room"))
+        {
+            String name = attributes.getValue("name");
+            roomBeingParsed = new Room(name);
+            displayableBeingParsed.addDisplayable(roomBeingParsed);
+        }
+        else if (qName.equalsIgnoreCase("Passage"))
+        {
+            passageBeingParsed = new Passage();
+            displayableBeingParsed.addDisplayable(passageBeingParsed);
+        }
+        else if (qName.equalsIgnoreCase("Item"))
+        {
             String type = attributes.getValue("type");
-            Activity activity = null;
+            Item item = null;
             switch (type) {
-                case "course":
-                    activity = new Course();
+                case "Armor":
+                    item = new Armor();
                     break;
-                case "club":
-                    activity = new Club();
+                case "Sword":
+                    item = new Sword();
+                    break;
+                case "Scroll":
+                    item = new Scroll();
                     break;
                 default:
                     System.out.println("Unknown activity: " + type);
                     break;
             }
-            activityBeingParsed = activity;
-            studentBeingParsed.addActivity(activity);
-        } else if (qName.equalsIgnoreCase("instructor")) {
-            bInstructor = true;
-        } else if (qName.equalsIgnoreCase("credit")) {
-            bCredit = true;
-        } else if (qName.equalsIgnoreCase("name")) {
-            bName = true;
-        } else if (qName.equalsIgnoreCase("meetingTime")) {
-            bMeetingTime = true;
-        } else if (qName.equalsIgnoreCase("meetingDay")) {
-            bMeetingDay = true;
-        } else if (qName.equalsIgnoreCase("number")) {
-            bNumber = true;
-        } else if (qName.equalsIgnoreCase("location")) {
-            bLocation = true;
-        } else {
+            itemBeingParsed = item;
+            displayableBeingParsed.addDisplayable(itemBeingParsed);
+            dis_object.add(new Item());
+        }
+        else if (qName.equalsIgnoreCase("Monster"))
+        {
+            monsterBeingParsed = new Monster();
+            displayableBeingParsed.addDisplayable(monsterBeingParsed);
+        }
+        else if (qName.equalsIgnoreCase("Player"))
+        {
+            playerBeingParsed = new Player();
+            displayableBeingParsed.addDisplayable(playerBeingParsed);
+        }
+        else if (qName.equalsIgnoreCase("ItemAction"))
+        {
+            itemactionBeingParsed = new ItemAction()
+            dis_object.add();
+        }
+        else if (qName.equalsIgnoreCase("CreatureAction"))
+        {
+            dis_object.add(new Player());
+        }
+        else if (qName.equalsIgnoreCase("posX")) {
+            bPosX = true;
+        } else if (qName.equalsIgnoreCase("posY")) {
+            bPosY = true;
+        } else if (qName.equalsIgnoreCase("width")) {
+            bwidth = true;
+        } else if (qName.equalsIgnoreCase("height")) {
+            bheight = true;
+        } else if (qName.equalsIgnoreCase("visible")) {
+            bvisible = true;
+        } else if (qName.equalsIgnoreCase("hp")) {
+            bhp = true;
+        } else if (qName.equalsIgnoreCase("maxhit")) {
+            bmaxhit = true;
+        }
+        else if (qName.equalsIgnoreCase("hpMoves")) {
+            bhpMoves = true;
+        }
+        else if (qName.equalsIgnoreCase("IntValue")) {
+            bIntValue = true;
+        }
+        else
+        {
             System.out.println("Unknown qname: " + qName);
         }
         data = new StringBuilder();
@@ -125,41 +182,69 @@ public class DungeonXMLHandler extends DefaultHandler {
 
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
-        Course course;
-        if (bInstructor) {
-            course = (Course) activityBeingParsed;
-            course.setInstructor(data.toString());
-            bInstructor = false;
-        } else if (bCredit) {
-            course = (Course) activityBeingParsed;
-            course.setCredit(Integer.parseInt(data.toString()));
-            bCredit = false;
-        } else if (bName) {
-            activityBeingParsed.setName(data.toString());
-            bName = false;
-        } else if (bNumber) {
-            course = (Course) activityBeingParsed;
-            course.setNumber(data.toString());
-            bNumber = false;
-        } else if (bLocation) {
-            activityBeingParsed.setLocation(data.toString());
-            bLocation = false;
-        } else if (bMeetingTime) {
-            activityBeingParsed.setMeetingTime(data.toString());
-            bMeetingTime = false;
-        } else if (bMeetingDay) {
-            activityBeingParsed.setMeetingDay(data.toString());
-            bMeetingDay = false;
+        Displayable display;
+        if (bPosX)
+        {
+            display = (Displayable) displayableBeingParsed;
+            display.setPosX(Integer.parseInt(data.toString()));
+            bPosX = false;
+        } else if (bPosY) {
+            display = (Displayable) displayableBeingParsed;
+            display.setPosY(Integer.parseInt(data.toString()));
+            bPosY = false;
+        } else if (bwidth) {
+            display = (Displayable) displayableBeingParsed;
+            display.setWidth(Integer.parseInt(data.toString()));
+            bwidth = false;
+        } else if (bvisible) {
+            display = (Displayable) displayableBeingParsed;
+            display.setVisible(Integer.parseInt(data.toString()));
+            bvisible = false;
         }
-
-        if (qName.equalsIgnoreCase("Students")) {
-            if (studentCount != maxStudents) {
-                System.out.println("wrong number of students parsed, should be " + maxStudents + ", is " + studentCount);
-            }
-        } else if (qName.equalsIgnoreCase("Student")) {
-            studentBeingParsed = null;
-        } else if (qName.equalsIgnoreCase("Activity")) {
-            activityBeingParsed = null;
+        else if (bInvisible) {
+            display = (Displayable) displayableBeingParsed;
+            display.setInvisible(Integer.parseInt(data.toString()));
+            bInvisible = false;
+        }
+        else if (btype) {
+            display = (Displayable) displayableBeingParsed;
+            display.setType(Integer.parseInt(data.toString()));
+            btype = false;
+        }
+        else if (bIntValue) {
+            display = (Displayable) displayableBeingParsed;
+            display.setIntValue(Integer.parseInt(data.toString()));
+            bIntValue = false;
+        }
+        else if (bheight) {
+            display = (Displayable) displayableBeingParsed;
+            display.setHeight((Integer.parseInt(data.toString()));
+            bheight = false;
+        }
+        else if (bhp) {
+            display = (Displayable) displayableBeingParsed;
+            display.setHp(Integer.parseInt(data.toString()));
+            bhp = false;
+        }
+        else if (bhpMoves) {
+            display = (Displayable) displayableBeingParsed;
+            display.setHpMove(Integer.parseInt(data.toString()));
+            bhpMoves = false;
+        }
+        else if (bmaxhit) {
+            display = (Displayable) displayableBeingParsed;
+            display.setMaxHit((Integer.parseInt(data.toString()));
+            bmaxhit = false;
+        }
+        else if (qName.equalsIgnoreCase("Room")) {
+            roomBeingParsed = null;
+        } else if (qName.equalsIgnoreCase("Passage")) {
+            passageBeingParsed = null;
+        }
+        else if (qName.equalsIgnoreCase("Item")) {
+            itemBeingParsed = null;
+        } else if (qName.equalsIgnoreCase("Monster")) {
+            monsterBeingParsed = null;
         }
     }
 
@@ -178,21 +263,39 @@ public class DungeonXMLHandler extends DefaultHandler {
 
     @Override
     public String toString() {
-        String str = "StudentsXMLHandler\n";
-        str += "   maxStudents: " + maxStudents + "\n";
-        str += "   studentCount: " + studentCount + "\n";
-        for (Student student : students) {
-            str += student.toString() + "\n";
+        String str = "DungeonXMLHandler\n";
+        for (Room room: rooms) {
+            str += room.toString() + "\n";
         }
-        str += "   studentBeingParsed: " + studentBeingParsed.toString() + "\n";
-        str += "   activityBeingParsed: " + activityBeingParsed.toString() + "\n";
-        str += "   bInstructor: " + bInstructor + "\n";
-        str += "   bCredit: " + bInstructor + "\n";
-        str += "   bName: " + bInstructor + "\n";
-        str += "   bNumber: " + bInstructor + "\n";
-        str += "   bLocation: " + bInstructor + "\n";
-        str += "   bMeetingTime: " + bInstructor + "\n";
-        str += "   bMeetingDay: " + bInstructor + "\n";
+        str += "   bPosX: " + bPosX + "\n";
+        str += "   bPosY: " + bPosY + "\n";
+        str += "   bwidth: " + bwidth + "\n";
+        str += "   bheight: " + bheight + "\n";
+        for (Monster monster: monsters) {
+            str += monster.toString() + "\n";
+        }
+        str += "   bvisible: " + bvisible + "\n";
+        str += "   bPosX: " + bPosX + "\n";
+        str += "   bPosY: " + bPosY + "\n";
+        str += "   btype: " + btype + "\n";
+        str += "   bhp: " + bhp + "\n";
+        str += "   bmaxhit: " + bmaxhit + "\n";
+        for (Player player: players) {
+            str += player.toString() + "\n";
+        }
+        str += "   bvisible: " + bvisible + "\n";
+        str += "   bPosX: " + bPosX + "\n";
+        str += "   bPosY: " + bPosY + "\n";
+        str += "   bhp: " + bhp + "\n";
+        str += "   bmaxhit: " + bmaxhit + "\n";
+        str += "   bhpMoves: " + bhpMoves + "\n";
+        str += "   dungeonBeingParsed: " + dungeonBeingParsed.toString() + "\n";
+        str += "   RoomBeingParsed: " + roomBeingParsed.toString() + "\n";
+        str += "   PassageBeingParsed: " + passageBeingParsed.toString() + "\n";
+        str += "   itemBeingParsed: " + itemBeingParsed.toString() + "\n";
+        str += "   monsterBeingParsed: " + monsterBeingParsed.toString() + "\n";
+        str += "   playerBeingParsed: " + playerBeingParsed.toString() + "\n";
+        str += "   BeingParsed: " + monsterBeingParsed.toString() + "\n";
         return str;
     }
 }
